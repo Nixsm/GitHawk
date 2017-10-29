@@ -142,7 +142,7 @@ FlatCacheListener {
                 client.githubClient.cache.add(listener: self, value: $0)
                 ids.append($0.id)
             }
-            rebuildAndUpdate(ids: ids, page: next as NSNumber?, animated: animated)
+            rebuildAndUpdate(ids: ids, append: append, page: next as NSNumber?, animated: animated)
         case .error:
             error(animated: true)
             ToastManager.showNetworkError()
@@ -154,13 +154,14 @@ FlatCacheListener {
 
     private func rebuildAndUpdate(
         ids: [String],
+        append: Bool,
         page: NSNumber?,
         animated: Bool
         ) {
-        if page == nil {
-            notificationIDs = ids
-        } else {
+        if append {
             notificationIDs += ids
+        } else {
+            notificationIDs = ids
         }
         update(page: page, animated: animated)
     }
